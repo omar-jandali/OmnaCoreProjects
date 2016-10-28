@@ -63,12 +63,44 @@ class Restaurants_Info(Base):
   restaurants = relationship(Restaurants)
 
 class Restaurants_Rating(Base):
-    __tablename__ = 'restaurants_rating'
+  __tablename__ = 'restaurants_rating'
 
-    food = Column(String(100), nullable = True)
-    service = Column(String(100), nullable = True)
-    pricing = Column(String(100), nullable = True)
-    location = Column(String(100), nullable = True)
-    access = Column(String(100), nullable = True)
-    restaurants_id = Column(Integer(100), ForeignKey('restaurants.id'))
-    restaurants = relationship(Restaurants)
+  food = Column(String(100), nullable = True)
+  service = Column(String(100), nullable = True)
+  pricing = Column(String(100), nullable = True)
+  location = Column(String(100), nullable = True)
+  access = Column(String(100), nullable = True)
+  restaurants_id = Column(Integer(100), ForeignKey('restaurants.id'))
+  restaurants = relationship(Restaurants)
+
+class Dishes(Base):
+  __tablename__ = 'dishes'
+
+  id = Column(Integer, primary_key = True)
+  name = Column(String(100), nullable = True, unique = True, index = True)
+  restaurant_id = Column(Integer, ForeignKey('restaurants.id'))
+  restaurant = relationship(Restaurants)
+
+
+class Dishes_Info(Base):
+  __tablename__ = 'dishes_info'
+
+  price = Column(Integer(6), nullable = True)
+  course = Column(String(100), nullable = True)
+  description = Column(String(200), nullable = True)
+  dishes_id = Column(Integer, ForeignKey('dishes.id'))
+  dishes = relationship(Dishes)
+
+class Dishes_Rating(Base):
+  __tablename__ = 'dishes_rating'
+
+  flavor = Column(Integer(2), nullable = True)
+  texture = Column(Integer(2), nullable = True)
+  appearence = Column(Integer(2), nullable = True)
+  price = Column(Integer(2), nullable = True)
+  restaurants_id = Column(Integer(100), ForeignKey('restaurants.id'))
+  restaurants = relationship(Restaurants)
+
+  engine = create_engine('sqlite:///tastebuds.db')
+
+Base.metadata.create_all(engine)
