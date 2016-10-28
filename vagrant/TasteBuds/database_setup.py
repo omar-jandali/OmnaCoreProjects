@@ -36,3 +36,39 @@ from sqlalchemy import create_engine
 # the following sets the Base as the declarative_base
 Base = declarative_base()
 
+class Restaurants(Base):
+  __tablename__ = 'restaurants'
+
+  id = Column(Integer, primary_key = True)
+  name = Column(String(200), nullable = False, unique = True, index = True)
+
+class Restaurants_Location(Base):
+  __tablename__ = 'restaurants_location'
+
+  street = Column(String(220), nullable = False)
+  city = Column(String(100), nullable = False, index = True)
+  state = Column(String(5), nullabe = False)
+  zip = Column(Integer(5), nullable = False)
+  restaurants_id = Column(Integer(100), ForeignKey('restaurants.id'))
+  restaurants = relationship(Restaurants)
+
+class Restaurants_Info(Base):
+  __tablename__ = 'restaurants_info'
+
+  cuisine = Column(String(100), nullable = False, index = True)
+  pricing = Column(String(100), nullable = False)
+  dining = Column(String(100), nullable = False)
+  hours = Column(String(100), nullable = False)
+  restaurants_id = Column(Integer(100), ForeignKey('restaurants.id'))
+  restaurants = relationship(Restaurants)
+
+class Restaurants_Rating(Base):
+    __tablename__ = 'restaurants_rating'
+
+    food = Column(String(100), nullable = True)
+    service = Column(String(100), nullable = True)
+    pricing = Column(String(100), nullable = True)
+    location = Column(String(100), nullable = True)
+    access = Column(String(100), nullable = True)
+    restaurants_id = Column(Integer(100), ForeignKey('restaurants.id'))
+    restaurants = relationship(Restaurants)
